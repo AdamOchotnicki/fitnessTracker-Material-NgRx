@@ -30,7 +30,12 @@
             <!-- <mat-error align="end">{{ passwordInput.value?.length }} / 6</mat-error> -->
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Your birthdate" [matDatepicker]="picker">
+            <input
+                matInput
+                placeholder="Your birthdate"
+                [matDatepicker]="picker"
+                [max]="maxDate"
+            >
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
