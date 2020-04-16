@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { AuthService } from '../auth.service';
 
@@ -11,7 +12,7 @@ import { AuthService } from '../auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
