@@ -9,7 +9,7 @@ import { AuthData } from './auth-data.model';
 @Injectable()
 export class AuthService {
     authChange = new Subject<boolean>();
-    private user: User;
+    private isAuthenticated = false;
 
     constructor(private router: Router, private afAuth: AngularFireAuth) { }
 
@@ -17,7 +17,6 @@ export class AuthService {
         this.afAuth.auth
             .createUserWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
-                console.log(result);
                 this.authSuccesfully();
             })
             .catch(error => {
@@ -29,7 +28,6 @@ export class AuthService {
         this.afAuth.auth
             .signInWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
-                console.log(result);
                 this.authSuccesfully();
             })
             .catch(error => {
@@ -38,20 +36,17 @@ export class AuthService {
     }
 
     logout() {
-        this.user = null;
+        this.isAuthenticated = false;
         this.authChange.next(false);
         this.router.navigate(['/login']);
     }
 
-    getUser() {
-        return { ...this.user };
-    }
-
     isAuth() {
-        return this.user != null;
+        return this.isAuthenticated;
     }
 
     private authSuccesfully() {
+        this.isAuthenticated = true;
         this.authChange.next(true);
         this.router.navigate(['/training']);
     }
