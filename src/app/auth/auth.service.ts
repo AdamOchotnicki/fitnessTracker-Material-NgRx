@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-import { User } from './user.model';
 import { AuthData } from './auth-data.model';
 import { TrainingService } from '../training/training.service';
 
@@ -18,12 +17,25 @@ export class AuthService {
         private trainingService: TrainingService
     ) { }
 
+    initAuthListener() {
+        this.afAuth.authState.subscribe(user => {
+            if (user) {
+                this.isAuthenticated = true;
+                this.authChange.next(true);
+                this.router.navigate(['/training']);
+            } else {
+                this.trainingService.cancelSubscriptions();
+                this.isAuthenticated = false;
+                this.authChange.next(false);
+                this.router.navigate(['/login']);
+            }
+        });
+    }
+
     registerUser(authData: AuthData) {
         this.afAuth.auth
             .createUserWithEmailAndPassword(authData.email, authData.password)
-            .then(result => {
-                this.authSuccesfully();
-            })
+            //.then(result => {})
             .catch(error => {
                 console.log(error);
             });
@@ -32,29 +44,16 @@ export class AuthService {
     login(authData: AuthData) {
         this.afAuth.auth
             .signInWithEmailAndPassword(authData.email, authData.password)
-            .then(result => {
-                this.authSuccesfully();
-            })
             .catch(error => {
                 console.log(error);
             });
     }
 
     logout() {
-        this.trainingService.cancelSubscriptions();
         this.afAuth.auth.signOut();
-        this.isAuthenticated = false;
-        this.authChange.next(false);
-        this.router.navigate(['/login']);
     }
 
     isAuth() {
         return this.isAuthenticated;
-    }
-
-    private authSuccesfully() {
-        this.isAuthenticated = true;
-        this.authChange.next(true);
-        this.router.navigate(['/training']);
     }
 }
