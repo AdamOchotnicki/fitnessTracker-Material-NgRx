@@ -24,6 +24,7 @@ export class TrainingService {
             .snapshotChanges()
             .pipe(
             map(docArray => {
+                //throw(new Error());
                 return docArray.map(doc => {
                 return {
                     id: doc.payload.doc.id,
