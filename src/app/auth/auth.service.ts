@@ -7,7 +7,8 @@ import { Store } from '@ngrx/store';
 import { AuthData } from './auth-data.model';
 import { TrainingService } from '../training/training.service';
 import { UIService } from '../shared/ui.service';
-import * as fromApp from '../app.reducer';
+import * as fromRoot from '../app.reducer';
+import * as UI from '../shared/ui.actions';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
         private afAuth: AngularFireAuth,
         private trainingService: TrainingService,
         private uiService: UIService,
-        private store: Store<{ui: fromApp.State}>
+        private store: Store<fromRoot.State>
     ) { }
 
     initAuthListener() {
@@ -39,32 +40,32 @@ export class AuthService {
 
     registerUser(authData: AuthData) {
         //this.uiService.loadingStateChange.next(true);
-        this.store.dispatch({type: 'START_LOADING'});
+        this.store.dispatch(new UI.StartLoading);
         this.afAuth.auth
             .createUserWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
                 //this.uiService.loadingStateChange.next(false);
-                this.store.dispatch({type: 'STOP_LOADING'});
+                this.store.dispatch(new UI.StopLoading);
             })
             .catch(error => {
                 //this.uiService.loadingStateChange.next(false);
-                this.store.dispatch({type: 'STOP_LOADING'});
+                this.store.dispatch(new UI.StopLoading);
                 this.uiService.showSnackbar(error.message, null, 3000);
             });
     }
 
     login(authData: AuthData) {
         //this.uiService.loadingStateChange.next(true);
-        this.store.dispatch({type: 'START_LOADING'});
+        this.store.dispatch(new UI.StartLoading);
         this.afAuth.auth
             .signInWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
                 //this.uiService.loadingStateChange.next(false);
-                this.store.dispatch({type: 'STOP_LOADING'});
+                this.store.dispatch(new UI.StopLoading);
             })
             .catch(error => {
                 //this.uiService.loadingStateChange.next(false);
-                this.store.dispatch({type: 'STOP_LOADING'});
+                this.store.dispatch(new UI.StopLoading);
                 this.uiService.showSnackbar(error.message, null, 3000);
             });
     }
