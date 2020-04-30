@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { Subscription, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+//import { AngularFireAuth } from 'angularfire2/auth';
+import { Observable } from 'rxjs';
+//import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AuthService } from '../auth.service';
-import { UIService } from '../../shared/ui.service';
+//import { UIService } from '../../shared/ui.service';
 import * as fromRoot from '../../app.reducer';
 
 @Component({
