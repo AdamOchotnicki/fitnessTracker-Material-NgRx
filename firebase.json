@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/fitnessTracker-Material-NgRx",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
